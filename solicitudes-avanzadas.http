@@ -1,0 +1,75 @@
+### Crear cliente
+
+POST http://localhost:8080/api/clientes
+Content-Type: application/json
+
+{
+  "nombre": "Andrés Miranda",
+  "email": "andres.miranda@test.com"
+}
+
+### Crear habitación estándar
+
+POST http://localhost:8080/api/habitaciones/estandar
+Content-Type: application/json
+
+{
+  "numero": "E01-101",
+  "precioPorNoche": 120.0,
+  "capacidadMaxima": 2,
+  "camasIndividuales": 2
+}
+
+### Crear reserva de prueba
+
+
+### Crear reserva
+POST http://localhost:8080/api/reservas
+Content-Type: application/json
+
+{
+  "clienteId": "3088f96f-ff1c-4acd-845d-1972eceb230e",
+  "habitacionId": "735650b2-985e-4e92-b724-342e94276cd1",
+  "fechaInicio": "2026-10-05T00:00:00",
+  "fechaFin": "2026-10-10T00:00:00"
+}
+
+### ==========================================
+### PRUEBA 1 - CREAR SUITE PRESIDENCIAL
+### ==========================================
+
+POST http://localhost:8080/api/habitaciones/suites
+Content-Type: application/json
+
+{
+  "numero": "P05-501",
+  "precioPorNoche": 350.0,
+  "capacidadMaxima": 2,
+  "jacuzziPrivado": true,
+  "incluyeMayordomo": true
+}
+
+### ==========================================
+### PRUEBA 2 - CONSULTA POLIMÓRFICA
+### ==========================================
+
+GET http://localhost:8080/api/habitaciones
+Accept: application/json
+
+### ==========================================
+### PRUEBA 3 - RESUMEN EJECUTIVO
+### ==========================================
+
+GET http://localhost:8080/api/clientes/3088f96f-ff1c-4acd-845d-1972eceb230e/resumen
+Accept: application/json
+
+### ==========================================
+### PRUEBA 4 - ACTUALIZACIÓN PARCIAL
+### ==========================================
+
+PATCH http://localhost:8080/api/clientes/3088f96f-ff1c-4acd-845d-1972eceb230e
+Content-Type: application/json
+
+{
+  "nombre": "Andres Modificado"
+}

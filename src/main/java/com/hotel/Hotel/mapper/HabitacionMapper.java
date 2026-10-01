@@ -28,10 +28,12 @@ public interface HabitacionMapper {
     HabitacionEstandarResponse toEstandarResponse(HabitacionEstandar habitacion);
     SuitePresidencialResponse toSuiteResponse(SuitePresidencial suite);
 
-    public record CrearHabitacionEstandarRequest(
-            String numero, double precioPorNoche, int capacidadMaxima, int camasIndividuales) {}
+    default HabitacionEstandar toEntity(CrearHabitacionEstandarRequest r) {
+        return new HabitacionEstandar(r.numero(), r.capacidadMaxima(), r.precioPorNoche(), r.camasIndividuales());
+    }
 
-    public record CrearSuitePresidencialRequest(
-            String numero, double precioPorNoche, int capacidadMaxima,
-            boolean incluyeMayordomo, boolean jacuzziPrivado) {}
+    default SuitePresidencial toEntity(CrearSuitePresidencialRequest r) {
+        return new SuitePresidencial(r.numero(), r.capacidadMaxima(), r.precioPorNoche(),
+                r.incluyeMayordomo(), r.jacuzziPrivado());
+    }
 }

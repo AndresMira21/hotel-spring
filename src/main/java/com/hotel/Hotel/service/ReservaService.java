@@ -12,6 +12,7 @@ import com.hotel.Hotel.repository.HabitacionRepository;
 import com.hotel.Hotel.repository.ReservaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import jakarta.persistence.EntityManager;
 
 import java.util.List;
 import java.util.UUID;
@@ -23,15 +24,18 @@ public class ReservaService {
     private final ClienteRepository clienteRepository;
     private final HabitacionRepository habitacionRepository;
     private final ReservaMapper reservaMapper;
+    private final EntityManager em;
 
     public ReservaService(ReservaRepository reservaRepository,
             ClienteRepository clienteRepository,
             HabitacionRepository habitacionRepository,
-            ReservaMapper reservaMapper) {
+            ReservaMapper reservaMapper,
+            EntityManager em) {
         this.reservaRepository = reservaRepository;
         this.clienteRepository = clienteRepository;
         this.habitacionRepository = habitacionRepository;
         this.reservaMapper = reservaMapper;
+        this.em = em;
     }
 
     @Transactional
@@ -42,13 +46,13 @@ public class ReservaService {
         Habitacion habitacion = habitacionRepository.findById(request.habitacionId())
                 .orElseThrow(() -> new IllegalArgumentException("Habitación no encontrada"));
 
-        RangoFechas periodo = new RangoFechas(request.fechaInicio(), request.fechaFin());
+        RangoFechas periodo = new RangoFechas(request.fechaFin(), request.fechaInicio());
 
         // Invocación a las invariantes del modelo de dominio rico
         Reserva nuevaReserva = new Reserva(cliente, habitacion, periodo);
-        Reserva guardada = reservaRepository.save(nuevaReserva);
+        em.persist(nuevaReserva);
 
-        return reservaMapper.toResponse(guardada);
+        return reservaMapper.toResponse(nuevaReserva);
     }
 
     @Transactional
