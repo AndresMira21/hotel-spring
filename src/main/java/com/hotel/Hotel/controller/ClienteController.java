@@ -23,7 +23,7 @@ public class ClienteController {
 
     @PostMapping
     public ResponseEntity<ClienteResponse> crear(@RequestBody CrearClienteRequest request,
-            UriComponentsBuilder uriBuilder) {
+                                                 UriComponentsBuilder uriBuilder) {
         ClienteResponse response = clienteService.crear(request);
         URI uri = uriBuilder.path("/api/clientes/{id}").buildAndExpand(response.id()).toUri();
         return ResponseEntity.created(uri).body(response);
@@ -37,5 +37,16 @@ public class ClienteController {
     @GetMapping("/{id}")
     public ResponseEntity<ClienteResponse> buscarPorId(@PathVariable UUID id) {
         return ResponseEntity.ok(clienteService.obtenerPorId(id));
+    }
+
+    @GetMapping("/{id}/resumen")
+    public ResponseEntity<?> obtenerResumen(@PathVariable UUID id) {
+        return ResponseEntity.ok(clienteService.obtenerResumen(id));
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<ClienteResponse> actualizarParcial(@PathVariable UUID id,
+                                                             @RequestBody CrearClienteRequest request) {
+        return ResponseEntity.ok(clienteService.actualizarParcial(id, request));
     }
 }
