@@ -7,10 +7,11 @@ import java.time.temporal.ChronoUnit;
 
 @Embeddable
 public record RangoFechas(
-        @Column(name = "fecha_inicio", nullable = false) LocalDateTime fechaInicio,
+        @Column(name = "fecha_fin", nullable = false) LocalDateTime fechaFin,
+        @Column(name = "fecha_inicio", nullable = false) LocalDateTime fechaInicio){
 
-        @Column(name = "fecha_fin", nullable = false) LocalDateTime fechaFin) {
     public RangoFechas {
+
         if (fechaInicio == null || fechaFin == null) {
             throw new IllegalArgumentException("Las fechas no pueden ser nulas");
         }

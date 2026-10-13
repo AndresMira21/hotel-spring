@@ -3,6 +3,7 @@ package com.hotel.Hotel.service;
 import com.hotel.Hotel.domain.Cliente;
 import com.hotel.Hotel.dto.request.CrearClienteRequest;
 import com.hotel.Hotel.dto.response.ClienteResponse;
+import com.hotel.Hotel.dto.response.ClienteResumenResponse;
 import com.hotel.Hotel.mapper.ClienteMapper;
 import com.hotel.Hotel.repository.ClienteRepository;
 import org.springframework.stereotype.Service;
@@ -40,4 +41,20 @@ public class ClienteService {
                 .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado con ID: " + id));
         return clienteMapper.toResponse(cliente);
     }
+
+    @Transactional(readOnly = true)
+    public ClienteResumenResponse obtenerResumen(UUID id) {
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado con ID: " + id));
+        return clienteMapper.toResumen(cliente);
+    }
+
+    @Transactional
+    public ClienteResponse actualizarParcial(UUID id, CrearClienteRequest dto) {
+        Cliente cliente = clienteRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado con ID: " + id));
+        clienteMapper.updateClienteFromDto(dto, cliente);
+        return clienteMapper.toResponse(clienteRepository.save(cliente));
+    }
+
 }
